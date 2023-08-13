@@ -36,4 +36,5 @@ http://localhost:3000/usuario
 Sánchez:
 
 • Eliminar un usuario por id; por ejemplo: el usuario con id=1:
+http://localhost:3000/usuario/borrar/id/2
 
