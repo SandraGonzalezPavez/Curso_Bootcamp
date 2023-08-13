@@ -18,7 +18,6 @@ http://localhost:3000/bootcamp/addUserBootcamp/idBootcamp/3/idUsuario/2
 http://localhost:3000/bootcamp/addUserBootcamp/idBootcamp/3/idUsuario/3
 
 
-
 Realizar las siguientes consultas:
 • Consultando el Bootcamp por id, incluyendo los usuarios:
 http://Localhost:3000/bootcamp/findBootcampId/idBootcamp/3
@@ -32,8 +31,9 @@ http://Localhost:3000/usuario/findUsuarioPorId/idUsuario/4
 • Listar los usuarios con sus Bootcamp:
 http://localhost:3000/usuario
 
-• Actualizar el usuario según su id; por ejemplo: actualizar el usuario con id=1 por Pedro
-Sánchez:
+• Actualizar el usuario según su id; por ejemplo: actualizar el usuario con id=4 con nombre= Sandra Gonzalez:
+http://localhost:3000/usuario/actualizar/id/4/firstName/sandra/lastName/gonzalez/email/sandra.gonzalez@correo.com
+(en Postman me aparece un mensaje que id no está definido, pero hace la actualización).
 
 • Eliminar un usuario por id; por ejemplo: el usuario con id=1:
 http://localhost:3000/usuario/borrar/id/2 
