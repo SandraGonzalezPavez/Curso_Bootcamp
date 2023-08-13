@@ -1,7 +1,7 @@
 # Curso_Bootcamp
 Base de datos de cursos de Bootcamp con sus usuarios
 
-DESCRIPCIÓN
+DESCRIPCIÓN  💻📓
 Planteamiento del ejercicio de aplicación.
 Actualmente, el equipo de desarrollo de software emite un requerimiento, donde se desea diseñar la
 gestión de cursos Bootcamp de una determinada empresa de adiestramiento. El equipo aplica la
@@ -33,8 +33,11 @@ http://localhost:3000/usuario
 
 • Actualizar el usuario según su id; por ejemplo: actualizar el usuario con id=4 con nombre= Sandra Gonzalez:
 http://localhost:3000/usuario/actualizar/id/4/firstName/sandra/lastName/gonzalez/email/sandra.gonzalez@correo.com
-(en Postman me aparece un mensaje que id no está definido, pero hace la actualización).
+(en Postman me aparece que el usuario 4 no fue encontrado, pero hace la actualización).
 
 • Eliminar un usuario por id; por ejemplo: el usuario con id=1:
 http://localhost:3000/usuario/borrar/id/2 
 
+No alcanzé a realizar actualizar en la tabla Bootcamp, pero luego lo realizaré.
+
+Gracia profsor por toda su ayuda!!!!
