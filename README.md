@@ -1,6 +1,9 @@
 # Curso_Bootcamp
 Base de datos de cursos de Bootcamp con sus usuarios
 
+Archivo en Git Hub:
+https://github.com/SandraGonzalezPavez/Curso_Bootcamp.git
+
 DESCRIPCIÓN  💻📓
 Planteamiento del ejercicio de aplicación.
 Actualmente, el equipo de desarrollo de software emite un requerimiento, donde se desea diseñar la
@@ -40,4 +43,4 @@ http://localhost:3000/usuario/borrar/id/2
 
 No alcanzé a realizar actualizar en la tabla Bootcamp, pero luego lo realizaré.
 
-Gracia profsor por toda su ayuda!!!!
+Gracia profesor por toda su ayuda!!!!
