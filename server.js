@@ -1,7 +1,8 @@
-const express = ('express');
+const express = require('express');
 app = express();
 require('dotenv').config();
 PORT = process.env.PORT;
+const { StatusCodes } = require('http-status-codes');
 const {
     createUsuario,
     findUsuarioPorId,
@@ -15,19 +16,47 @@ const {
     addUserBootcamp,
     findBootcampId,
     findTodosBootcamp
-
 } = require('./app/controllers/bootcamp.controller');
 
-const { StatusCodes } = ('http-status-codes');
+app.get('/usuario/create/:firstName/:lastName/:email', async (req, res) => {
+    const firstName = req.params.firstName;
+    const lastName = req.params.lastName;
+    const email = req.params.email;
+ try {
+        const user = await createUsuario({ firstName, lastName, email });
+        res.status(StatusCodes.CREATED).json({ 
+            message: `usuario ${user.firstName} ${user.lastName}fue creado con éxito`,
+            usuario: user 
+        });
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
+});
+
+const { bootcamp } = require('./app/models');
+app.get('/bootcamp/createBootcamp/:title/title/:cue/cue/:description/description', async (req, res) => {
+    const name = req.params.title;
+    const cue = req.params.cue;
+    const description = req.params.description;
+    try {
+        const curso = await createBootcamp({ name, cue, description });
+        res.status(StatusCodes.CREATED).json({ 
+            message: `Bootcamp ${curso.name} fue creado con éxito`,
+            bootcamp: curso
+        });
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
+});
 
 // Insertar usuarios en los bootcamps
-app.get('/bootcamp/addUserBootcamp/idBootcamp/:idBootcamp/idUsuario/:idUusuario', async (req, res) => {
+app.get('/bootcamp/addUserBootcamp/idBootcamp/:idBootcamp/idUsuario/:idUsuario', async (req, res) => {
     const idBootcamp = Number(req.params.idBootcamp);
-    const idUsuario = Number(req.params.idUusuario);
+    const idUsuario = Number(req.params.idUsuario);
     try {
-        const resultado = await addUserBootcamp(idBootcamp, idUsuario);
+        const resultado= await addUserBootcamp(idBootcamp, idUsuario);
         res.status(StatusCodes.CREATED).json({
-            message: `Se agregó usuario id ${idUser} al proyecto id ${idProject}`,
+            message: `Se agregó usuario id ${idUsuario} al proyecto id ${idBootcamp}`,
             bootcamp: resultado
         });
 
@@ -57,10 +86,10 @@ app.get('/bootcamp/findBootcampId/idBootcamp/:idBootcamp', async (req, res) => {
 // Listar todos los Bootcamps con sus usuarios
 app.get('/bootcamp', async (req, res) => {
     try {
-        const resultado = await findTodosBootcamp();
+        const cursos = await findTodosBootcamp();
         res.status(StatusCodes.OK).json({
-            message: `se encontraron ${proyectos.length} proyectos`,
-            bootcamp: resultado
+            message: `se encontraron ${cursos.length} proyectos`,
+            bootcamp: cursos
         });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -89,10 +118,10 @@ app.get('/usuario/findUsuarioPorId/idUsuario/:idUsuario', async (req, res) => {
 //Listar todos los usuarios
 app.get('/usuario', async (req, res) => {
     try {
-        const resultado = await findTodosLosUsuarios();
+        const usuarios = await findTodosLosUsuarios();
         res.status(StatusCodes.OK).json({
             message: `se encontraron ${usuarios.length} usuarios`,
-            usuario: resultado
+            usuario: usuarios
         });
 
     } catch (error) {
@@ -102,55 +131,53 @@ app.get('/usuario', async (req, res) => {
 });
 
 //Actualizar un usuario por id
-app.get('usuario/actualizar/idUsuario/:idUsuario/name/:name', async (req, res) => {
-
-    const idUsuario = Number(req.params.idUsuario);
-    const name = req.params.name;
+app.get('/usuario/actualizar/id/:id/firstName/:firstName/lastName/:lastName/email/:email', async (req, res) => {
+    const id = Number(req.params.id);
+    const firstName = req.params.firstName;
+    const lastName = req.params.lastName;
+    const email = req.params.email;
     try {
-        const resultado = await actualizarUsuario({
-            idUsuario, name
+        const actualizados = await actualizarUsuario({
+            id,
+            firstName,
+            lastName,
+            email
         });
-        if (resultado) {
-            if (resultado !== -1) {
-                res.status(StatusCodes.CREATED).json({
-                    message: 'Usuario actualizado',
-                    usuario: resultado
+        if (actualizados) {
+            
+                res.status(StatusCodes.CREATED).json({ 
+                    message: `usuario id ${id} fue actualizado con éxito`
                 });
-            } else {
-                res.status(StatusCodes.BAD_REQUEST).json({
-                    message: 'No se actualizaron datos'
-                });
-            }; 
-    } ;
-}catch (error) {
-            res.status(StatusCodes.NOT_FOUND).json({
+            
+        } else {
+            res.status(StatusCodes.NOT_FOUND).json({ 
                 message: `usuario id ${id} no fue encontrado`
             });
         }
-    
-    });
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
+});
 
 // Eliminar un usuario por id
-    app.get('usuario/borrar/idUsuario/:idUsuario', async (req, res) => {
-        const idUsuario = Number(req.params.idUsuario);
-        try {
-            const borrado = await borrarUsuario(idUsuario);
-            if (borrado) {
-                res.status(StatusCodes.CREATED).json({
-                    message: 'Usuario borrado',
-                    usuario: borrado
-                });
-                
-            } else {
-                res.status(StatusCodes.NOT_FOUND).json({
-                    message: 'No se encontró usuario'
-                });
-            };
-        } catch (error) {
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                message: error.message
-        });
-    }});
+app.get('/usuario/borrar/id/:id', async (req, res) => {
+    const id = Number(req.params.id);
+    try {
+        const borrados = await borrarUsuario(id);
+        if (borrados) {
+            res.status(StatusCodes.CREATED).json({ 
+                message: `usuario id ${id} fue borrado con éxito`
+            });
+        } else {
+            res.status(StatusCodes.NOT_FOUND).json({ 
+                message: `usuario id ${id} no fue encontrado`
+            });
+        }
+        
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
+});
 
 
 
@@ -161,4 +188,4 @@ app.get('usuario/actualizar/idUsuario/:idUsuario/name/:name', async (req, res) =
 
 
 
-app.listen(PORT, () => console.log('Inicializando en el puerto ${PORT}'));
+app.listen(PORT, () => console.log(`Inicializando en el puerto ${PORT}`));

@@ -1,11 +1,14 @@
-const { bootcamp} = require('../models');
+const { 
+    bootcamp,
+    usuario
+} = require('../models');
 
 const createBootcamp = async (bootcamp) => {
     try {
-        const curso = await bootcamp.create( {
+        const curso = await bootcamp.create({
             name: bootcamp.name,
+            cue: bootcamp.cue,
             description: bootcamp.description,
-            cue: bootcamp.cue
         });
         console.log(` El Bootcamp ${JSON.stringify(curso, null, 4)} ha sido creado`);
     } catch (error) {
@@ -20,12 +23,12 @@ const addUserBootcamp = async (bootcampId, usuarioId) => {
     if (!curso) {
         throw new Error('El Bootcamp no existe');
     }
-    const usuario = await usuario.findByPk(usuarioId);
-    if (!usuario) {
+    const user = await usuario.findByPk(usuarioId);
+    if (!user) {
         throw new Error('El Usuario no existe');
     }
-    await curso.addUsuario(usuario);
-    console.log(` El Usuario ${JSON.stringify(usuario, null, 4)} ha sido agregado al Bootcamp ${JSON.stringify(curso, null, 4)}`);
+    await curso.addUsuario(user);
+    console.log(` El Usuario ${JSON.stringify(user, null, 4)} ha sido agregado al Bootcamp ${JSON.stringify(curso, null, 4)}`);
    return curso;
 } catch (error) {
         console.log(error);
@@ -40,7 +43,7 @@ const findBootcampId = async (bootcampId) => {
                 {
                    model: usuario,
                    as: 'usuario',
-                   attributes: ['title', 'cue', 'description'], 
+                   attributes: ['id', 'firstName', 'lastName', 'email'], 
                    through: {
                     attributes: []
         }
@@ -62,7 +65,7 @@ console.log(` Se ha encontrado el bootcamp ${JSON.stringify(curso, null, 4)}`);
                 { 
                     model: usuario,
                     as: 'usuario',
-                    attributes: ['title', 'cue', 'description'], 
+                    attributes: ['id', 'firstName', 'lastName', 'email'], 
                     through: {
                         attributes: []
                     }

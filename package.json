@@ -1,13 +1,14 @@
 {
   "name": "cursosbootcamp",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon.cmd",
-    "sync-db": "node ./scripts/createTables.js"
+    "dev": ".\\node_modules\\.bin\\nodemon.cmd",
+    "sync-bd": "node ./scripts/createTable.js",
+    "bulk-u": "node ./scripts/bulkcreateUsuario.js",
+    "bulk-b": "node ./scripts/bulkcreateBootcamp.js"
   },
   "keywords": [],
   "author": "",
@@ -15,11 +16,13 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "http-status-codes": "^2.2.0",
     "pg": "^8.11.2",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.32.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "description": ""
 }

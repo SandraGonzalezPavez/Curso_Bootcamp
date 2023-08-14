@@ -1,17 +1,18 @@
 const { DataTypes } = require ('sequelize');
-const sequelize = require ('../app/');
+const sequelize = require ('../config/db.config');
+
 const bootcamp = sequelize.define('bootcamp', {
     title: {
         type:DataTypes.STRING,
-    notNull:true
+        allowNull:false
     },
     cue: {
         type:DataTypes.INTEGER,
-        notNull:true
+        allowNull:false
     },
     description: {
         type:DataTypes.STRING,
-        notNull:true
+        allowNull:false
     }
 
 });

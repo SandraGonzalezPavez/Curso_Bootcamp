@@ -1,14 +1,17 @@
-const { usuario } = require('../models');
+const { 
+    bootcamp,
+    usuario
+} = require('../models');
 
-const createUsuario = async (usuario) => {
+const createUsuario = async (Usuario) => {
     try {
-        const usuari = await usuari.create({
-            firstName: usuario.firstName,
-            lastName: usuario.lastName,
-            email: usuario.email
+        const user = await usuario.create({
+            firstName: Usuario.firstName,
+            lastName: Usuario.lastName,
+            email: Usuario.email
         });
-        console.log(`Se ha creado el usuario ${JSON.stringify(usuario, null, 4)}`);
-        return usuario;
+        console.log(`Se ha creado el usuario ${JSON.stringify(user, null, 4)}`);
+        return user;
     } catch (error) {
         console.error(error);
         throw error;
@@ -17,12 +20,12 @@ const createUsuario = async (usuario) => {
 
 const findUsuarioPorId = async (usuarioId) => {
     try {
-        const usuario = await usuario.findByPk(usuarioId, {
+        const user = await usuario.findByPk(usuarioId, {
             include: [
                 {
                     model: bootcamp,
                     as: 'bootcamp',
-                    attributes: ['id', 'firstName', 'lastName', 'email'],
+                    attributes: ['id', 'title', 'cue','description'],
                     through: {
                         attributes: []
                     }
@@ -30,8 +33,8 @@ const findUsuarioPorId = async (usuarioId) => {
                 }
             ]
         });
-        console.log(`el usuario ${JSON.stringify(usuario, null, 4)} se ha encontrado`);
-        return usuario;
+        console.log(`el usuario ${JSON.stringify(user, null, 4)} se ha encontrado`);
+        return user;
     } catch (error) {
         console.error(error);
         throw error;
@@ -39,12 +42,12 @@ const findUsuarioPorId = async (usuarioId) => {
 };
 const findTodosLosUsuarios = async () => {
     try {
-        const usuarios = usuario.findAll({
+        const usuarios =  await usuario.findAll({
             include: [
                 {
                     model: bootcamp,
                     as: 'bootcamp',
-                    attributes: ['id', 'firstName', 'lastName', 'email'],
+                    attributes: ['id', 'title', 'cue','description'],
                     through: {
                         attributes: []
                     }
@@ -60,35 +63,40 @@ const findTodosLosUsuarios = async () => {
     }
 };
 
-const actualizarUsuario = async (usuario) => {
+const actualizarUsuario = async (Usuario) => {
     try {
-        await usuario.update({
-            firstName: usuario.firstName,
-            lastName: usuario.lastName,
-            email: usuario.email
-        });
-        console.log(`Se ha actualizado el usuario ${JSON.stringify(usuario, null, 4)}`);
-        return usuario;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-const borrarUsuario = async (usuarioId) => {
-    try {
-        await usuario.destroy({
-            where: {
-                id: usuarioId
+        const user = await usuario.findByPk(Usuario.id);
+        if (user) {
+           
+             const   actualizados = await usuario.update({
+                    firstName: Usuario.firstName,
+                    lastName:Usuario.lastName,
+                    email: Usuario.email
+                }, {
+                    where: { id:Usuario.id }
+                });
+                console.log(`actualizados: ${actualizados}`);
+                console.log(`Se ha actualizado el usuario con id ${Usuario.id}`);
+            
             }
-        });
-        console.log(`Se ha borrado el usuario ${JSON.stringify(usuarioId, null, 4)}`);
-        return usuarioId;
     } catch (error) {
         console.error(error);
         throw error;
     }
-};
+}
+const borrarUsuario = async (id) => {
+    try {
+        const borrados = await usuario.destroy({ 
+            where: { id }
+        });
+        console.log(`borrados: ${borrados}`);
+        console.log(`Usuario id ${id} fue borrado con éxito`);
+        return borrados;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
 
 module.exports = {
     createUsuario,
